@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Days to April 12, 2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Arial Black', Arial, sans-serif;
+            overflow: hidden;
+            animation: backgroundShift 24s linear infinite;
+        }
+
+        .countdown {
+            font-size: 15vw;
+            font-weight: 900;
+            color: white;
+            text-shadow: 
+                4px 4px 8px rgba(0,0,0,0.5),
+                -2px -2px 4px rgba(255,255,255,0.2);
+            text-align: center;
+            z-index: 2;
+        }
+
+        /* Dynamic background that changes based on day of year */
+        @keyframes backgroundShift {
+            0% { background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #f9ca24); }
+            25% { background: linear-gradient(135deg, #6c5ce7, #fd79a8, #00b894, #fdcb6e); }
+            50% { background: linear-gradient(225deg, #e17055, #81ecec, #74b9ff, #a29bfe); }
+            75% { background: linear-gradient(315deg, #00cec9, #55a3ff, #fd79a8, #ffeaa7); }
+            100% { background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #f9ca24); }
+        }
+
+        /* Additional animated background elements */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(255,255,255,0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255,255,255,0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(255,255,255,0.05) 0%, transparent 50%);
+            animation: float 30s ease-in-out infinite;
+            z-index: 1;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-20px) rotate(120deg); }
+            66% { transform: translateY(10px) rotate(240deg); }
+        }
+
+        /* Responsive font sizing */
+        @media (max-width: 768px) {
+            .countdown {
+                font-size: 25vw;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="countdown" id="countdown">
+        <!-- Days will be inserted here -->
+    </div>
+
+    <script>
+        function calculateDaysToApril12() {
+            const targetDate = new Date('2026-04-12');
+            const today = new Date();
+            
+            // Reset time to midnight for accurate day calculation
+            today.setHours(0, 0, 0, 0);
+            targetDate.setHours(0, 0, 0, 0);
+            
+            const timeDifference = targetDate.getTime() - today.getTime();
+            const daysDifference = Math.ceil(timeDifference / (1000 * 3600 * 24));
+            
+            return daysDifference;
+        }
+
+        function updateCountdown() {
+            const days = calculateDaysToApril12();
+            document.getElementById('countdown').textContent = days;
+        }
+
+        function setDailyBackgroundSeed() {
+            const today = new Date();
+            const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);
+            
+            // Use day of year to offset the animation, making it appear different each day
+            const animationDelay = (dayOfYear * 2.4) % 24; // 2.4 creates variation over days
+            document.body.style.animationDelay = `-${animationDelay}s`;
+        }
+
+        // Initialize the page
+        updateCountdown();
+        setDailyBackgroundSeed();
+        
+        // Update every hour to catch day changes
+        setInterval(updateCountdown, 3600000);
+    </script>
+</body>
+</html>
